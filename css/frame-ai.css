@@ -1,0 +1,866 @@
+/* ==========================================================================
+   FRAME AI — CINEMATIC PHOTOGRAPHY CLUB ASSISTANT
+   Prefix: frame-ai- (Strictly namespaced to prevent collisions)
+   Visuals: Cinematic Dark, Camera Lens & Aperture Mechanics, Neon/Burnt Orange
+   ========================================================================== */
+
+:root {
+  --frame-ai-bg-main: #101114;
+  --frame-ai-bg-secondary: #18191D;
+  --frame-ai-bg-input: #131417;
+  --frame-ai-bg-bubble-ai: #17181D;
+  --frame-ai-bg-bubble-user: #231B15;
+  --frame-ai-accent: #FF7628;
+  --frame-ai-accent-bright: #FF9B60;
+  --frame-ai-accent-glow: rgba(255, 118, 40, 0.35);
+  --frame-ai-border: #343238;
+  --frame-ai-border-subtle: #242328;
+  --frame-ai-border-accent: rgba(255, 118, 40, 0.35);
+  --frame-ai-text: #F5F5F5;
+  --frame-ai-text-secondary: #A7A7AE;
+  --frame-ai-text-muted: #6B6A72;
+  --frame-ai-font-display: 'Syne', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --frame-ai-font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --frame-ai-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 25px rgba(255, 118, 40, 0.15);
+  --frame-ai-radius-panel: 22px;
+  --frame-ai-radius-sm: 8px;
+  --frame-ai-radius-md: 14px;
+}
+
+/* ==========================================================================
+   FLOATING LAUNCHER (Camera Aperture & Lens)
+   ========================================================================== */
+.frame-ai-launcher {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #232227 0%, #0c0d0f 70%, #050506 100%);
+  border: 2px solid var(--frame-ai-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 24px var(--frame-ai-accent-glow);
+  cursor: pointer;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  padding: 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  animation: frame-ai-float 4.5s ease-in-out infinite, frame-ai-breathing-glow 3s ease-in-out infinite alternate;
+}
+
+.frame-ai-launcher:hover,
+.frame-ai-launcher:focus-visible {
+  transform: scale(1.06);
+  border-color: var(--frame-ai-accent);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.9), 0 0 35px rgba(255, 118, 40, 0.6);
+}
+
+.frame-ai-launcher:focus-visible {
+  outline: 3px solid var(--frame-ai-accent-bright);
+  outline-offset: 4px;
+}
+
+/* Concentric mechanical rings */
+.frame-ai-launcher-rings {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 118, 40, 0.35);
+  animation: frame-ai-rotate-ring 30s linear infinite;
+  pointer-events: none;
+}
+
+/* Restrained pulse wave */
+.frame-ai-pulse-wave {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 118, 40, 0.4);
+  animation: frame-ai-pulse 3.5s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Inner lens glass reflection */
+.frame-ai-lens-core {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(255, 118, 40, 0.15) 0%, #121316 65%, #08090a 100%);
+  border: 1.5px solid rgba(255, 118, 40, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: inset 0 2px 8px rgba(255, 155, 96, 0.25), inset 0 -4px 10px rgba(0, 0, 0, 0.8);
+}
+
+/* Glass glare reflection */
+.frame-ai-lens-core::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 44px;
+  height: 22px;
+  border-radius: 50% 50% 30% 30%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
+  transform: rotate(-25deg);
+  pointer-events: none;
+}
+
+/* Aperture blade SVG inside launcher */
+.frame-ai-aperture-svg {
+  width: 38px;
+  height: 38px;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.frame-ai-launcher:hover .frame-ai-aperture-svg {
+  transform: rotate(45deg);
+}
+
+/* Close icon when active */
+.frame-ai-close-icon {
+  display: none;
+  color: var(--frame-ai-accent-bright);
+}
+
+.frame-ai-launcher.frame-ai-active .frame-ai-aperture-svg,
+.frame-ai-launcher.frame-ai-active .frame-ai-launcher-rings {
+  display: none;
+}
+
+.frame-ai-launcher.frame-ai-active .frame-ai-close-icon {
+  display: block;
+}
+
+/* Tooltip */
+.frame-ai-tooltip {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  background: var(--frame-ai-bg-secondary);
+  color: var(--frame-ai-text);
+  font-family: var(--frame-ai-font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 8px 14px;
+  border-radius: var(--frame-ai-radius-sm);
+  border: 1px solid var(--frame-ai-border-accent);
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.frame-ai-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--frame-ai-bg-secondary);
+}
+
+.frame-ai-launcher:hover .frame-ai-tooltip,
+.frame-ai-launcher:focus-visible .frame-ai-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+.frame-ai-launcher.frame-ai-active .frame-ai-tooltip {
+  display: none;
+}
+
+/* ==========================================================================
+   CHAT PANEL
+   ========================================================================== */
+.frame-ai-panel {
+  position: fixed;
+  bottom: 124px;
+  right: 28px;
+  width: 410px;
+  height: 640px;
+  max-height: calc(100vh - 150px);
+  background: var(--frame-ai-bg-main);
+  border: 1px solid var(--frame-ai-border-accent);
+  border-radius: var(--frame-ai-radius-panel);
+  box-shadow: var(--frame-ai-shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 99998;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.96);
+  transform-origin: bottom right;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.35s;
+}
+
+.frame-ai-panel.frame-ai-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* Top Subtle Aperture Glow */
+.frame-ai-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, var(--frame-ai-accent) 50%, transparent 100%);
+  z-index: 5;
+}
+
+/* ==========================================================================
+   A. HEADER
+   ========================================================================== */
+.frame-ai-header {
+  padding: 16px 20px;
+  background: var(--frame-ai-bg-secondary);
+  border-bottom: 1px solid var(--frame-ai-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.frame-ai-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.frame-ai-header-aperture {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #271e18 0%, #131417 100%);
+  border: 1px solid var(--frame-ai-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px var(--frame-ai-accent-glow);
+}
+
+.frame-ai-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.frame-ai-wordmark {
+  font-family: var(--frame-ai-font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--frame-ai-text);
+  line-height: 1.2;
+}
+
+.frame-ai-wordmark span {
+  color: var(--frame-ai-accent);
+}
+
+.frame-ai-subtitle {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--frame-ai-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.frame-ai-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #2ed573;
+  box-shadow: 0 0 8px rgba(46, 213, 115, 0.7);
+  animation: frame-ai-pulse-dot 2s infinite ease-in-out;
+}
+
+.frame-ai-status-dot.offline {
+  background-color: var(--frame-ai-text-muted);
+  box-shadow: none;
+  animation: none;
+}
+
+.frame-ai-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.frame-ai-btn-icon {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--frame-ai-text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--frame-ai-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.frame-ai-btn-icon:hover {
+  background: #25242b;
+  color: var(--frame-ai-text);
+  border-color: var(--frame-ai-border);
+}
+
+.frame-ai-btn-icon:focus-visible {
+  outline: 2px solid var(--frame-ai-accent);
+}
+
+/* ==========================================================================
+   B. CHAT BODY & WELCOME SECTION
+   ========================================================================== */
+.frame-ai-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-behavior: smooth;
+}
+
+.frame-ai-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.frame-ai-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.frame-ai-body::-webkit-scrollbar-thumb {
+  background: var(--frame-ai-border);
+  border-radius: 4px;
+}
+
+/* Welcome Hero Box */
+.frame-ai-welcome {
+  background: radial-gradient(circle at 80% 20%, rgba(255, 118, 40, 0.08) 0%, var(--frame-ai-bg-secondary) 80%);
+  border: 1px solid var(--frame-ai-border);
+  border-radius: var(--frame-ai-radius-md);
+  padding: 18px;
+  text-align: left;
+  animation: frame-ai-fade-in 0.4s ease;
+}
+
+.frame-ai-welcome-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: rgba(255, 118, 40, 0.15);
+  border: 1px solid rgba(255, 118, 40, 0.3);
+  color: var(--frame-ai-accent-bright);
+  font-size: 0.68rem;
+  font-weight: 700;
+  border-radius: 999px;
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.frame-ai-welcome-title {
+  font-family: var(--frame-ai-font-display);
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: var(--frame-ai-text);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.frame-ai-welcome-text {
+  font-size: 0.85rem;
+  color: var(--frame-ai-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+/* ==========================================================================
+   C. SUGGESTED QUESTION CHIPS
+   ========================================================================== */
+.frame-ai-suggestions-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--frame-ai-text-muted);
+  margin-bottom: 8px;
+}
+
+.frame-ai-chips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.frame-ai-chip {
+  background: #15161A;
+  border: 1px solid var(--frame-ai-border);
+  color: var(--frame-ai-text);
+  padding: 7px 12px;
+  border-radius: var(--frame-ai-radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-align: left;
+}
+
+.frame-ai-chip:hover {
+  background: #1F2026;
+  border-color: var(--frame-ai-accent);
+  color: var(--frame-ai-accent-bright);
+  transform: translateY(-1px);
+}
+
+.frame-ai-chip:focus-visible {
+  outline: 2px solid var(--frame-ai-accent);
+}
+
+/* ==========================================================================
+   D. MESSAGE BUBBLES
+   ========================================================================== */
+.frame-ai-message {
+  display: flex;
+  gap: 10px;
+  max-width: 90%;
+  animation: frame-ai-message-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.frame-ai-message-user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.frame-ai-message-ai {
+  align-self: flex-start;
+}
+
+.frame-ai-msg-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #18191d;
+  border: 1px solid var(--frame-ai-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.frame-ai-msg-avatar svg {
+  width: 14px;
+  height: 14px;
+  color: var(--frame-ai-accent);
+}
+
+.frame-ai-bubble {
+  padding: 12px 16px;
+  border-radius: var(--frame-ai-radius-md);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--frame-ai-text);
+  word-break: break-word;
+}
+
+.frame-ai-message-user .frame-ai-bubble {
+  background: var(--frame-ai-bg-bubble-user);
+  border: 1px solid var(--frame-ai-border-accent);
+  border-bottom-right-radius: 4px;
+  color: #FFF2EB;
+}
+
+.frame-ai-message-ai .frame-ai-bubble {
+  background: var(--frame-ai-bg-bubble-ai);
+  border: 1px solid var(--frame-ai-border-subtle);
+  border-bottom-left-radius: 4px;
+  color: var(--frame-ai-text);
+}
+
+/* Markdown styling within AI responses */
+.frame-ai-bubble p {
+  margin-bottom: 8px;
+}
+
+.frame-ai-bubble p:last-child {
+  margin-bottom: 0;
+}
+
+.frame-ai-heading {
+  font-family: var(--frame-ai-font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--frame-ai-accent-bright);
+  margin: 12px 0 6px 0;
+  letter-spacing: 0.02em;
+}
+
+.frame-ai-heading:first-child {
+  margin-top: 0;
+}
+
+.frame-ai-divider {
+  border: none;
+  border-top: 1px solid var(--frame-ai-border);
+  margin: 12px 0;
+}
+
+.frame-ai-bubble strong {
+  color: var(--frame-ai-accent-bright);
+  font-weight: 700;
+}
+
+.frame-ai-bubble ul, .frame-ai-bubble ol {
+  padding-left: 20px;
+  margin: 6px 0 8px;
+}
+
+.frame-ai-bubble li {
+  margin-bottom: 4px;
+}
+
+.frame-ai-bubble code {
+  background: #0E0F12;
+  border: 1px solid var(--frame-ai-border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: var(--frame-ai-accent-bright);
+}
+
+.frame-ai-bubble pre {
+  background: #0A0B0D;
+  border: 1px solid var(--frame-ai-border);
+  padding: 10px 12px;
+  border-radius: var(--frame-ai-radius-sm);
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+.frame-ai-bubble pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* Typing Indicator (Camera shutter / Pulse) */
+.frame-ai-typing {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 12px 18px;
+  background: var(--frame-ai-bg-bubble-ai);
+  border: 1px solid var(--frame-ai-border-subtle);
+  border-radius: var(--frame-ai-radius-md);
+  border-bottom-left-radius: 4px;
+  width: fit-content;
+}
+
+.frame-ai-typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--frame-ai-accent);
+  animation: frame-ai-typing-bounce 1.4s infinite ease-in-out both;
+}
+
+.frame-ai-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.frame-ai-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+.frame-ai-typing-dot:nth-child(3) { animation-delay: 0s; }
+
+/* Error Message with Retry */
+.frame-ai-error-box {
+  background: rgba(235, 77, 75, 0.1);
+  border: 1px solid rgba(235, 77, 75, 0.35);
+  border-radius: var(--frame-ai-radius-sm);
+  padding: 12px 14px;
+  font-size: 0.84rem;
+  color: #ff9f9f;
+  margin-top: 6px;
+}
+
+.frame-ai-retry-btn {
+  background: transparent;
+  border: 1px solid #eb4d4b;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.frame-ai-retry-btn:hover {
+  background: #eb4d4b;
+}
+
+/* ==========================================================================
+   E. INPUT COMPONENT
+   ========================================================================== */
+.frame-ai-input-wrapper {
+  padding: 14px 18px;
+  background: var(--frame-ai-bg-secondary);
+  border-top: 1px solid var(--frame-ai-border-subtle);
+  flex-shrink: 0;
+}
+
+.frame-ai-input-box {
+  background: var(--frame-ai-bg-input);
+  border: 1px solid var(--frame-ai-border);
+  border-radius: var(--frame-ai-radius-md);
+  padding: 8px 12px 8px 14px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.frame-ai-input-box:focus-within {
+  border-color: var(--frame-ai-accent);
+  box-shadow: 0 0 14px var(--frame-ai-accent-glow);
+}
+
+.frame-ai-textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--frame-ai-text);
+  font-family: var(--frame-ai-font-body);
+  font-size: 0.88rem;
+  resize: none;
+  max-height: 100px;
+  min-height: 24px;
+  line-height: 1.4;
+  padding: 4px 0;
+}
+
+.frame-ai-textarea::placeholder {
+  color: var(--frame-ai-text-muted);
+}
+
+.frame-ai-send-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--frame-ai-radius-sm);
+  background: var(--frame-ai-accent);
+  color: #08090B;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px var(--frame-ai-accent-glow);
+}
+
+.frame-ai-send-btn:hover:not(:disabled) {
+  background: var(--frame-ai-accent-bright);
+  transform: scale(1.06);
+}
+
+.frame-ai-send-btn:disabled {
+  background: #25242a;
+  color: #55545d;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.frame-ai-input-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 0.7rem;
+  color: var(--frame-ai-text-muted);
+}
+
+/* ==========================================================================
+   F. FOOTER
+   ========================================================================== */
+.frame-ai-footer {
+  padding: 8px 18px;
+  background: #0B0C0E;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--frame-ai-text-muted);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   ANIMATIONS & KEYFRAMES
+   ========================================================================== */
+@keyframes frame-ai-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes frame-ai-breathing-glow {
+  0% {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 18px rgba(255, 118, 40, 0.2);
+  }
+  100% {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.9), 0 0 32px rgba(255, 118, 40, 0.5);
+  }
+}
+
+@keyframes frame-ai-rotate-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes frame-ai-pulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes frame-ai-pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+@keyframes frame-ai-typing-bounce {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes frame-ai-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes frame-ai-message-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Accessibility: Respect Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .frame-ai-launcher,
+  .frame-ai-launcher-rings,
+  .frame-ai-pulse-wave,
+  .frame-ai-typing-dot,
+  .frame-ai-status-dot {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS
+   ========================================================================== */
+@media (max-width: 600px) {
+  .frame-ai-launcher {
+    bottom: 20px;
+    right: 20px;
+    width: 68px;
+    height: 68px;
+  }
+
+  .frame-ai-lens-core {
+    width: 48px;
+    height: 48px;
+  }
+
+  .frame-ai-aperture-svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .frame-ai-panel {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 90vh;
+    max-height: 90vh;
+    border-radius: 20px 20px 0 0;
+    border-bottom: none;
+    padding-bottom: env(safe-area-inset-bottom, 12px);
+  }
+
+  .frame-ai-tooltip {
+    display: none;
+  }
+}

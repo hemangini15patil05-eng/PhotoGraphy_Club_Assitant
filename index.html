@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FRAME - College Photography Club. Curated visual storytelling, masterclasses, daily photo challenges, and the FRAME AI photography mentor.">
+  <meta name="theme-color" content="#08090B">
+  <title>FRAME — College Photography Club &amp; AI Assistant</title>
+
+  <!-- Google Fonts: Syne (Editorial Display) & Plus Jakarta Sans (UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Website Styles -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- FRAME AI Assistant Styles (Namespaced) -->
+  <link rel="stylesheet" href="css/frame-ai.css">
+
+  <!-- Favicon Aperture -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF7628'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%23FF7628' stroke-width='2' fill='none'/%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       SITE HEADER / NAVIGATION
+       ========================================================================== -->
+  <header class="site-nav">
+    <div class="container">
+      <a href="#" class="nav-brand" aria-label="FRAME Photography Club Home">
+        <div class="brand-icon">
+          <!-- Aperture Icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF7628" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+            <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+            <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+            <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
+            <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
+            <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
+          </svg>
+        </div>
+        <span class="brand-title">FRAME <span>CLUB</span></span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#portfolio" class="nav-link active">Gallery</a></li>
+          <li><a href="#workshops" class="nav-link">Workshops</a></li>
+          <li><a href="#challenge" class="nav-link">Daily Challenge</a></li>
+          <li><a href="#gear" class="nav-link">Gear Guide</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button type="button" class="nav-btn nav-btn-secondary" onclick="window.FrameAI && window.FrameAI.open()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 16v-4"></path>
+            <path d="M12 8h.01"></path>
+          </svg>
+          Ask FRAME AI
+        </button>
+        <a href="#workshops" class="nav-btn nav-btn-primary">Join Club</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================================
+         HERO SECTION (Visual Layout Inspired by Frameblox)
+         ========================================================================== -->
+    <section class="hero-section" id="portfolio">
+      <div class="container">
+        <span class="hero-overline">Authentic. Timeless. Captivating.</span>
+        <h1 class="hero-title">Photography That Tells Your Story</h1>
+        <p class="hero-subtitle">
+          A curated portfolio of portraits, moments, and visual storytelling. Let's capture something real.
+        </p>
+        <button type="button" class="hero-cta-btn" onclick="window.FrameAI ? window.FrameAI.ask('Can you help me plan my next photography session? Recommend starting settings and composition advice.') : null">
+          <span>Capture Your Moment</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+
+        <!-- 9-Shot Editorial Gallery Grid -->
+        <div class="hero-gallery">
+          <!-- Card 1: Red Vintage Porsche -->
+          <div class="gallery-card" tabindex="0" role="button" aria-label="Classic Curves Photo">
+            <img src="assets/images/hero_porsche.jpg" alt="Vintage Red Porsche 911 in Studio" loading="eager">
+            <div class="card-overlay">
+              <span class="card-tag">Automotive &middot; Studio</span>
+              <h2 class="card-title">Classic Curves</h2>
+              <span class="card-meta">f/2.8 &middot; 1/250s &middot; ISO 100 &middot; 50mm</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Teacup Still Life -->
+          <div class="gallery-card" tabindex="0" role="button" aria-label="Morning Warmth Photo">
+            <img src="assets/images/hero_teacup.jpg" alt="Artisan Tea Cup on Brass Saucer" loading="eager">
+            <div class="card-overlay">
+              <span class="card-tag">Still Life &middot; Fine Art</span>
+              <h2 class="card-title">Morning Warmth</h2>
+              <span class="card-meta">f/1.8 &middot; 1/160s &middot; ISO 200 &middot; 35mm</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Minimalist Modern Chair -->
+          <div class="gallery-card" tabindex="0" role="button" aria-label="Monochrome Form Photo">
+            <img src="assets/images/hero_chair.jpg" alt="Minimalist Black Chair Spotlight" loading="eager">
+            <div class="card-overlay">
+              <span class="card-tag">Interior &middot; Minimalist</span>
+              <h2 class="card-title">Monochrome Form</h2>
+              <span class="card-meta">f/4.0 &middot; 1/125s &middot; ISO 400 &middot; 85mm</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Tortoiseshell Sunglasses -->
+          <div class="gallery-card" tabindex="0" role="button" aria-label="Refraction Photo">
+            <img src="assets/images/hero_sunglasses.jpg" alt="Clear Acetate Sunglasses on Marble" loading="eager">
+            <div class="card-overlay">
+              <span class="card-tag">Product &middot; Commercial</span>
+              <h2 class="card-title">Clear Reflections</h2>
+              <span class="card-meta">f/2.8 &middot; 1/320s &middot; ISO 100 &middot; 90mm Macro</span>
+            </div>
+          </div>
+
+          <!-- Card 5: Editorial Portrait with Glasses (Tall) -->
+          <div class="gallery-card tall" tabindex="0" role="button" aria-label="Golden Horizon Portrait">
+            <img src="assets/images/hero_portrait.jpg" alt="Editorial Fashion Portrait of Woman with Glasses and Gold Chains" loading="eager">
+            <div class="card-overlay">
+              <span class="card-tag">Portraiture &middot; Editorial</span>
+              <h2 class="card-title">Golden Horizon</h2>
+              <span class="card-meta">f/1.4 &middot; 1/500s &middot; ISO 100 &middot; 85mm</span>
+            </div>
+          </div>
+
+          <!-- Card 6: Leather Jacket Flatlay -->
+          <div class="gallery-card" tabindex="0" role="button" aria-label="Leather and Glass Flatlay">
+            <img src="assets/images/hero_leather.jpg" alt="Vintage Leather Jacket and Rangefinder Camera" loading="eager">
+            <div class="card-overlay">
+              <span class="card-tag">Fashion &middot; Editorial</span>
+              <h2 class="card-title">Leather &amp; Brass</h2>
+              <span class="card-meta">f/2.2 &middot; 1/200s &middot; ISO 160 &middot; 40mm</span>
+            </div>
+          </div>
+
+          <!-- Card 7: Cinematic Moody Silhouette -->
+          <div class="gallery-card" tabindex="0" role="button" aria-label="Shadow Geometry Photo">
+            <img src="assets/images/hero_chair.jpg" style="filter: hue-rotate(20deg) contrast(1.2);" alt="Moody Shadow Silhouette" loading="lazy">
+            <div class="card-overlay">
+              <span class="card-tag">Abstract &middot; Geometry</span>
+              <h2 class="card-title">Shadow Play</h2>
+              <span class="card-meta">f/2.0 &middot; 1/400s &middot; ISO 100 &middot; 50mm</span>
+            </div>
+          </div>
+
+          <!-- Card 8: High Speed Automotive -->
+          <div class="gallery-card" tabindex="0" role="button" aria-label="Speed and Velocity Photo">
+            <img src="assets/images/hero_porsche.jpg" style="filter: saturate(1.2) contrast(1.15);" alt="Automotive Motion" loading="lazy">
+            <div class="card-overlay">
+              <span class="card-tag">Motion &middot; Speed</span>
+              <h2 class="card-title">Night Velocity</h2>
+              <span class="card-meta">f/3.5 &middot; 1/15s Panning &middot; ISO 800</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         CLUB WORKSHOPS & MASTERCLASSES
+         ========================================================================== -->
+    <section class="section-padding" id="workshops">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Hands-on Learning</span>
+          <h2 class="section-title">Club Masterclasses &amp; Workshops</h2>
+          <p class="section-desc">
+            Develop your technical precision, light manipulation, and visual storytelling through guided mentor sessions.
+          </p>
+        </div>
+
+        <div class="workshop-grid">
+          <div class="workshop-card">
+            <span class="workshop-badge">Fundamentals</span>
+            <h3 class="workshop-title">The Exposure Triangle</h3>
+            <p class="workshop-desc">
+              Demystify aperture, shutter speed, and ISO. Master manual mode shooting to balance depth of field, motion blur, and clean noise profiles.
+            </p>
+            <div class="workshop-meta">
+              <span>Weekly &middot; Studio Lab 2B</span>
+              <button type="button" class="workshop-ask-btn" data-topic="the Exposure Triangle and manual camera settings">
+                Ask FRAME AI &rarr;
+              </button>
+            </div>
+          </div>
+
+          <div class="workshop-card">
+            <span class="workshop-badge">Lighting</span>
+            <h3 class="workshop-title">Golden Hour &amp; Portraiture</h3>
+            <p class="workshop-desc">
+              Techniques for rim lighting, natural diffusion, 5-in-1 reflectors, and subject framing to achieve editorial magazine-grade portraits.
+            </p>
+            <div class="workshop-meta">
+              <span>Outdoor Walk &middot; Campus Quad</span>
+              <button type="button" class="workshop-ask-btn" data-topic="portrait lighting during golden hour and reflector techniques">
+                Ask FRAME AI &rarr;
+              </button>
+            </div>
+          </div>
+
+          <div class="workshop-card">
+            <span class="workshop-badge">Post-Production</span>
+            <h3 class="workshop-title">Cinematic RAW Color Grading</h3>
+            <p class="workshop-desc">
+              Lightroom tone curves, HSL sliders, split toning, and preserving dynamic range to produce cohesive editorial aesthetics.
+            </p>
+            <div class="workshop-meta">
+              <span>Digital Lab &middot; Room 402</span>
+              <button type="button" class="workshop-ask-btn" data-topic="RAW color grading workflows and Lightroom tone curve secrets">
+                Ask FRAME AI &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================================================
+             DAILY PHOTO CHALLENGE CALLOUT
+             ========================================================================== -->
+        <div class="challenge-banner" id="challenge">
+          <div class="challenge-content">
+            <div class="challenge-prompt-tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              TODAY'S CLUB CHALLENGE
+            </div>
+            <h3>The Art of Negative Space &amp; Harsh Shadows</h3>
+            <p>
+              Capture a solitary subject utilizing at least 70% negative dark space and warm directional lighting. Open FRAME AI to receive starting settings and creative composition angles!
+            </p>
+          </div>
+          <button type="button" class="challenge-btn" id="challenge-trigger-btn">
+            Get Challenge Settings &rarr;
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         CURATED GEAR GUIDE SECTION
+         ========================================================================== -->
+    <section class="section-padding" id="gear" style="background: #0B0C0F; border-top: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Equipment Knowledge</span>
+          <h2 class="section-title">Student Gear &amp; Lens Essentials</h2>
+          <p class="section-desc">
+            Equipment advice vetted for student budgets, whether you're shooting mirrorless, DSLR, or 35mm film.
+          </p>
+        </div>
+
+        <div class="workshop-grid">
+          <div class="workshop-card">
+            <span class="workshop-badge">Lenses</span>
+            <h3 class="workshop-title">The "Nifty Fifty" Prime</h3>
+            <p class="workshop-desc">
+              Why an affordable 50mm f/1.8 lens is every photographer's indispensable secret weapon for low light and shallow depth of field.
+            </p>
+            <div class="workshop-meta">
+              <span>Budget Essential</span>
+              <button type="button" class="workshop-ask-btn" data-topic="why a 50mm f/1.8 prime lens is great for beginners">
+                Learn More &rarr;
+              </button>
+            </div>
+          </div>
+
+          <div class="workshop-card">
+            <span class="workshop-badge">Filters</span>
+            <h3 class="workshop-title">CPL &amp; ND Glass Filters</h3>
+            <p class="workshop-desc">
+              Cut harsh glass and water reflections with Circular Polarizers, and execute silky long exposures in midday sun with Neutral Density filters.
+            </p>
+            <div class="workshop-meta">
+              <span>Creative Control</span>
+              <button type="button" class="workshop-ask-btn" data-topic="how and when to use CPL and ND filters">
+                Learn More &rarr;
+              </button>
+            </div>
+          </div>
+
+          <div class="workshop-card">
+            <span class="workshop-badge">Support</span>
+            <h3 class="workshop-title">Tripods &amp; Shutter Release</h3>
+            <p class="workshop-desc">
+              Eliminate camera shake for night cityscapes, astrophotography, and light trails with sturdy three-section carbon fiber or aluminum supports.
+            </p>
+            <div class="workshop-meta">
+              <span>Stability</span>
+              <button type="button" class="workshop-ask-btn" data-topic="tripod techniques for sharp long exposures and astrophotography">
+                Learn More &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       SITE FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          FRAME <span>PHOTOGRAPHY CLUB</span>
+        </div>
+        <ul class="footer-links">
+          <li><a href="#portfolio">Gallery</a></li>
+          <li><a href="#workshops">Workshops</a></li>
+          <li><a href="#challenge">Challenge</a></li>
+          <li><a href="#gear">Gear</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 FRAME Photography Club. Crafted for visual storytellers and photography enthusiasts.</p>
+        <p>Powered by Google Gemini &middot; Built with security and cinematic aesthetics.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       FRAME AI — INDEPENDENT FLOATING CHATBOT WIDGET
+       (Strictly namespaced with frame-ai- prefix)
+       ========================================================================== -->
+
+  <!-- 1. Floating Circular Camera Aperture Launcher -->
+  <button type="button"
+          id="frame-ai-launcher"
+          class="frame-ai-launcher"
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          aria-controls="frame-ai-panel"
+          aria-label="Open FRAME AI Photography Assistant">
+    
+    <!-- Rotating Mechanical Concentric Ring -->
+    <div class="frame-ai-launcher-rings" aria-hidden="true"></div>
+    <!-- Breathing Outer Pulse Wave -->
+    <div class="frame-ai-pulse-wave" aria-hidden="true"></div>
+
+    <!-- Central Lens Core with Glass Glare -->
+    <div class="frame-ai-lens-core">
+      <!-- High-Precision Aperture Blades SVG Artwork -->
+      <svg class="frame-ai-aperture-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Outer Aperture Ring -->
+        <circle cx="50" cy="50" r="46" stroke="#FF7628" stroke-width="2.5" stroke-dasharray="3 3"/>
+        <circle cx="50" cy="50" r="39" stroke="#FF9B60" stroke-width="1.2" opacity="0.6"/>
+        
+        <!-- Precision Interlocking Aperture Blades -->
+        <path d="M50 12 L78 35 L62 58 Z" fill="#FF7628" opacity="0.9"/>
+        <path d="M78 35 L78 68 L50 62 Z" fill="#FF9B60" opacity="0.85"/>
+        <path d="M78 68 L50 88 L38 62 Z" fill="#FF7628" opacity="0.9"/>
+        <path d="M50 88 L22 65 L38 42 Z" fill="#FF9B60" opacity="0.85"/>
+        <path d="M22 65 L22 32 L50 38 Z" fill="#FF7628" opacity="0.9"/>
+        <path d="M22 32 L50 12 L62 38 Z" fill="#FF9B60" opacity="0.85"/>
+        
+        <!-- Center Aperture Opening Hexagon -->
+        <polygon points="50,38 62,45 62,55 50,62 38,55 38,45" fill="#08090B" stroke="#FF9B60" stroke-width="1.5"/>
+        <circle cx="50" cy="50" r="4" fill="#FF7628"/>
+      </svg>
+
+      <!-- Active Close Icon (Shown when panel is open) -->
+      <svg class="frame-ai-close-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </div>
+
+    <!-- Floating Hover Tooltip -->
+    <span class="frame-ai-tooltip" role="tooltip">Photography Assistant</span>
+  </button>
+
+  <!-- 2. Cinematic Assistant Chat Panel -->
+  <aside id="frame-ai-panel"
+         class="frame-ai-panel"
+         role="dialog"
+         aria-modal="false"
+         aria-hidden="true"
+         aria-labelledby="frame-ai-title">
+
+    <!-- A. Header -->
+    <div class="frame-ai-header">
+      <div class="frame-ai-brand">
+        <div class="frame-ai-header-aperture" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF7628" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="12,7 16,10 16,14 12,17 8,14 8,10" fill="#FF7628"></polygon>
+          </svg>
+        </div>
+        <div class="frame-ai-titles">
+          <h2 id="frame-ai-title" class="frame-ai-wordmark">FRAME <span>AI</span></h2>
+          <span class="frame-ai-subtitle">
+            <span id="frame-ai-status-dot" class="frame-ai-status-dot" aria-hidden="true"></span>
+            <span id="frame-ai-status-text">PHOTOGRAPHY CLUB ASSISTANT</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="frame-ai-header-controls">
+        <!-- Reset / New Chat Button -->
+        <button type="button"
+                id="frame-ai-reset-btn"
+                class="frame-ai-btn-icon"
+                title="Start New Conversation"
+                aria-label="Clear chat and start new conversation">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+        </button>
+
+        <!-- Close Panel Button -->
+        <button type="button"
+                id="frame-ai-close-btn"
+                class="frame-ai-btn-icon"
+                title="Close Assistant"
+                aria-label="Close Assistant Panel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- B. Chat Body & Messages -->
+    <div id="frame-ai-body" class="frame-ai-body">
+      <!-- Welcome Hero Section -->
+      <div id="frame-ai-welcome" class="frame-ai-welcome">
+        <span class="frame-ai-welcome-badge">Creative Photography Companion</span>
+        <h3 class="frame-ai-welcome-title">Every frame tells a story.</h3>
+        <p class="frame-ai-welcome-text">
+          Your intelligent club mentor. Ask about camera settings, lighting, composition, editing, gear recommendations, and creative challenge ideas.
+        </p>
+
+        <!-- C. Suggested Question Chips -->
+        <div class="frame-ai-suggestions-title">Quick Topics</div>
+        <div id="frame-ai-chips" class="frame-ai-chips-grid">
+          <!-- Rendered dynamically via js/frame-ai.js -->
+        </div>
+      </div>
+
+      <!-- Live Messages Stream -->
+      <div id="frame-ai-messages" class="frame-ai-messages" aria-live="polite"></div>
+    </div>
+
+    <!-- E. Input Wrapper -->
+    <div class="frame-ai-input-wrapper">
+      <div class="frame-ai-input-box">
+        <textarea id="frame-ai-textarea"
+                  class="frame-ai-textarea"
+                  rows="1"
+                  placeholder="Ask about camera settings, composition, lighting..."
+                  aria-label="Type your photography question here"></textarea>
+
+        <button type="button"
+                id="frame-ai-send-btn"
+                class="frame-ai-send-btn"
+                aria-label="Send message"
+                title="Send message (Enter)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+
+      <div class="frame-ai-input-meta">
+        <span>Press Enter to send, Shift+Enter for new line</span>
+        <span id="frame-ai-char-count">0 / 1000</span>
+      </div>
+    </div>
+
+    <!-- F. Footer -->
+    <div class="frame-ai-footer">
+      MADE FOR PHOTOGRAPHY LOVERS
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       SCRIPTS
+       ========================================================================== -->
+  <script src="js/frame-ai-config.js"></script>
+  <script src="js/frame-ai.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
